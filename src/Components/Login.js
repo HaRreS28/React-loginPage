@@ -6,11 +6,20 @@ function Login() {
     const welcome = "Welcome Back";
     const [welcomeHeader, setWelcomeHeader] = useState("")
 
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs] = useState({
+        password: "",
+        email: ""
+    });
 
-    const [warning,setWarning] =useState("")
+    const [warning, setWarning] = useState({
+        password: "",
+        email: ""
+    })
 
-    const [isWrong,setIsWrong]=useState(false)
+    const [isWrong, setIsWrong] = useState({
+        password: false,
+        email: false
+    })
 
     useEffect(() => {
         let timeout;
@@ -31,14 +40,32 @@ function Login() {
         setInputs(values => ({...values, [name]: value}))
     }
 
-    console.log(inputs);
 
     function clickHandler(event) {
-        setIsWrong(false)
+        setIsWrong({
+            password: false,
+            email: false
+        })
         event.preventDefault();
-        if(inputs.password.length < 8) {
-            setWarning("Password min 8 letters")
-            setIsWrong(true)
+        if (inputs.password.length < 8) {
+            setWarning(prev => ({
+                ...prev,
+                password: "Password min 8 letters"
+            }))
+            setIsWrong(prev => ({
+                ...prev,
+                password: true
+            }))
+        }
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(inputs.email)) {
+            setWarning(prev => ({
+                ...prev,
+                email: "Email is not valid"
+            }))
+            setIsWrong(prev => ({
+                ...prev,
+                email: true
+            }))
         }
     }
 
@@ -50,14 +77,15 @@ function Login() {
                 </header>
                 <form className="login-form" onSubmit={handleSubmit}>
                     <label htmlFor="email" className="login-form-label">Email</label>
-                    <input type="email" id="email" className="login-form-input" required
-                    maxLength={50}
+                    <p className="login-form-warning">{isWrong.email && warning.email}</p>
+                    <input type="email" id="email" className="login-form-input"
+                           maxLength={50}
                            name="email"
                            value={inputs.email || ""}
                            onChange={handleChange}/>
                     <label htmlFor="password" className="login-form-label">Password</label>
-                    <p className="login-form-warning">{isWrong && warning}</p>
-                    <input type="password" id="password" className="login-form-input" required
+                    <p className="login-form-warning">{isWrong.password && warning.password}</p>
+                    <input type="password" id="password" className="login-form-input"
                            maxLength={50}
                            name="password"
                            value={inputs.password || ""}
@@ -67,19 +95,18 @@ function Login() {
                     <p className="login-footer-register">Do not have account ?
                         <a href="#">Sign up</a>
                     </p>
-                    <button type="button" onClick={clickHandler} className="login-form-footer-button">
-                    <IconContext.Provider value={{
-                        color: "mediumpurple",
-                        size: "50px"
-                    }}>
-                        <FaSignInAlt/>
-                    </IconContext.Provider>
+                    <button onClick={clickHandler} className="login-form-footer-button">
+                        <IconContext.Provider value={{
+                            color: "mediumpurple",
+                            size: "50px"
+                        }}>
+                            <FaSignInAlt/>
+                        </IconContext.Provider>
                     </button>
                 </footer>
             </main>
         </div>
     );
 }
-
 
 export default Login;

@@ -4,7 +4,7 @@ import {IconContext} from "react-icons";
 
 function Login() {
     const welcome = "Welcome Back";
-    const [welcomeHeader, setWelcomeHeader] = useState("")
+    const [welcomeHeader, setWelcomeHeader] = useState("");
 
     const [inputs, setInputs] = useState({
         password: "",
@@ -14,12 +14,12 @@ function Login() {
     const [warning, setWarning] = useState({
         password: "",
         email: ""
-    })
+    });
 
     const [isWrong, setIsWrong] = useState({
         password: false,
         email: false
-    })
+    });
 
     useEffect(() => {
         let timeout;
@@ -41,7 +41,7 @@ function Login() {
     }
 
 
-    function clickHandler(event) {
+    function handleClick(event) {
         setIsWrong({
             password: false,
             email: false
@@ -50,14 +50,14 @@ function Login() {
         if (inputs.password.length < 8) {
             setWarning(prev => ({
                 ...prev,
-                password: "Password min 8 letters"
+            password:"Password min 8 letters"
             }))
             setIsWrong(prev => ({
                 ...prev,
                 password: true
             }))
         }
-        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(inputs.email)) {
+        if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(inputs.email)) {
             setWarning(prev => ({
                 ...prev,
                 email: "Email is not valid"
@@ -93,9 +93,10 @@ function Login() {
                 </form>
                 <footer className="login-footer">
                     <p className="login-footer-register">Do not have account ?
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                         <a href="#">Sign up</a>
                     </p>
-                    <button onClick={clickHandler} className="login-form-footer-button">
+                    <button onClick={handleClick} className="login-form-footer-button">
                         <IconContext.Provider value={{
                             color: "mediumpurple",
                             size: "50px"
